@@ -5,10 +5,12 @@ from enum import Enum
 from typing import List, Optional
 
 from flask import Flask, request, abort, jsonify, render_template
+from flask_cors import CORS
 from pydantic import BaseModel, ValidationError
 
 
 app = Flask(__name__)
+CORS(app)
 orders_fname = 'orders.json'
 
 
@@ -85,3 +87,8 @@ def price():
 @app.route('/toppings')
 def toppings():
     return jsonify([t.value for t in Topping])
+
+if __name__ == '__main__':
+    app.debug = True
+    app.run(host='0.0.0.0', port=5000)
+
