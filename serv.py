@@ -31,6 +31,19 @@ class Order(BaseModel):
     toppings: Optional[List[Topping]] = []
 
 
+def get_price(order):
+    size_prices = {
+        Size.SMALL: 10,
+        Size.MEDIUM: 15,
+        Size.LARGE: 20,
+    }
+    topping_prices = {
+        Topping.PEPPERONI: 4,
+        Topping.MUSRHOOM: 3,
+        Topping.ONION: 1,
+    }
+    return size_prices[order.pizza_size] + sum(topping_prices[t] for t in order.toppings)
+
 # Routes
 
 @app.route('/')
@@ -63,10 +76,10 @@ def list_orders():
 @app.route('/price', methods=['POST'])
 def price():
     try:
-        order = Order(**request.json)
+        order = Order(**request.get_json(force=True))
     except ValidationError as e:
-        abort(400, {'errors': e.json()})
-    return 42
+        return e.json(), 400
+    return {"price": get_price(order)}
 
 
 @app.route('/toppings')

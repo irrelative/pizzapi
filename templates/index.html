@@ -1,1 +1,135 @@
-<h1>Pizza</h1>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pizz-a-pi Docs</title>
+    <style>
+        * {
+            font-family: sans-serif;
+        }
+        #content {
+            margin: 20px auto;
+            max-width: 800px;
+        }
+        pre {
+            font-family: monospace;
+        }
+        th {
+            font-size: 24px;
+            vertical-align: top;
+        }
+        th, td {
+            padding: 10px; 
+        }
+
+    </style>
+</head>
+
+<body>
+<div id="content">
+
+<h1>Pizz-a-pi Docs</h1>
+<p>
+    Some docs for the pizz-a-pi service.
+</p>
+<ul>
+    <li>
+        All input and output from this service is assumed to be JSON
+    </li>
+    <li>
+        All urls need a base-url to get started, this will be provided.
+    </li>
+</ul>
+
+
+<h2>Order Object Shape</h2>
+
+<pre>
+{
+    "id": 42,                   # An identifier d
+    "pizza_size": "medium",     # small, medium, or large
+    "toppings": ["onion"]       # A list of toppings, see /toppings endpoint for valid entries
+}
+</pre>
+
+<h2>Endpoints</h2>
+
+
+<table>
+    <tbody>
+        <tr>
+            <th>/orders</th>
+            <td>
+                <b>GET</b>
+                <p>
+                    Performing an http GET on /orders will return a json list of orders, as described by the shape above. Eg:
+                </p>
+                <pre>
+$# curl http://hostname:5000/orders
+[
+  {
+    "id": 1,
+    "pizza_size": "small",
+    "toppings": []
+  },
+  {
+    "id": 2,
+    "pizza_size": "medium",
+    "toppings": ["pepperoni"]
+  }
+]
+                </pre>
+
+                <b>POST</b>
+                <p>
+                    Performing an http POST on /orders with a valid json body shape will create an order.
+                    Note that "id" should not be included, will be generated server-side. Eg:
+                </p>
+                <pre>
+$# curl -d '{"pizza_size": "small", "toppings": ["mushroom"]}' http://hostname:5000/orders
+{
+  "id": 5,
+  "pizza_size": "small",
+  "toppings": [
+    "mushroom"
+  ]
+}
+                </pre>
+            </td>
+        </tr>
+        <tr>
+            <th>/toppings</th>
+            <td>
+                <b>GET</b>
+                <p>
+                    Performing an http GET on /orders will return a json list of toppings. Eg:
+                </p>
+                <pre>
+curl http://hostname:5000/toppings
+[
+  "pepperoni",
+  "mushroom",
+  "onion"
+]
+                </pre>
+            </td>
+        </tr>
+        <tr>
+            <th>/price</th>
+            <td>
+                <b>POST</b>
+                <p>
+                    Performing an http POST on /price will return the price of a pizza. Assume $US for value. Eg:
+                </p>
+                <pre>
+$# curl -d '{"pizza_size": "small", "toppings": ["mushroom"]}' http://hostname:5000/price
+                </pre>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+
+
+</div>
+</body>
+</html>
