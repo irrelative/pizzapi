@@ -21,47 +21,49 @@
             padding: 10px; 
         }
 
+
     </style>
 </head>
 
 <body>
 <div id="content">
 
-<h1>Pizz-a-pi Docs</h1>
-<p>
-    Some docs for the pizz-a-pi service.
-</p>
-<ul>
-    <li>
-        All input and output from this service is assumed to be JSON
-    </li>
-    <li>
-        All urls need a base-url to get started, this will be provided.
-    </li>
-</ul>
+    <h1>Pizz-a-pi Docs</h1>
+    <p>
+        Some docs for the pizz-a-pi service.
+    </p>
+    <ul>
+        <li>
+            All input and output from this service is assumed to be JSON
+        </li>
+        <li>
+            All urls need a base-url to get started, this will be provided.
+        </li>
+    </ul>
 
 
-<h2>Order Object Shape</h2>
+    <h2>Order Object Shape</h2>
 
-<pre>
+    <pre>
 {
-    "id": 42,                   # An identifier d
+    "id": 42,                   # A unique identifier
     "pizza_size": "medium",     # small, medium, or large
     "toppings": ["onion"]       # A list of toppings, see /toppings endpoint for valid entries
 }
 </pre>
 
-<h2>Endpoints</h2>
+    <h2>Endpoints</h2>
 
 
-<table>
-    <tbody>
+    <table>
+        <tbody>
         <tr>
             <th>/orders</th>
             <td>
                 <b>GET</b>
                 <p>
-                    Performing an http GET on /orders will return a json list of orders, as described by the shape above. Eg:
+                    Performing an http GET on /orders will return a json list of orders, as described by the shape
+                    above. Eg:
                 </p>
                 <pre>
 $# curl http://hostname:5000/orders
@@ -125,10 +127,8 @@ $# curl -d '{"pizza_size": "small", "toppings": ["mushroom"]}' http://hostname:5
                 </pre>
             </td>
         </tr>
-    </tbody>
-</table>
-
-
+        </tbody>
+    </table>
 
 </div>
 </body>
