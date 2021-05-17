@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Pizz-a-pi Docs</title>
+    <title>Deli Docs</title>
     <style>
         * {
             font-family: sans-serif;
@@ -28,16 +28,30 @@
 <body>
 <div id="content">
 
-    <h1>Pizz-a-pi Docs</h1>
+    <h1>Deli API</h1>
     <p>
-        Some docs for the pizz-a-pi service.
+        Thanks for helping us implement an ordering system for our new deli! For this exercise, you will be
+        implementing some API functionality that is used to capture orders. Lucky for us, this deli currently
+        just makes sandwiches, so the API can be fairly simple. 
+    </p>
+    <p>
+        Please implement the http endpoint for getting and creating orders. There are some sample <code>curl</code>
+        calls to test your implementation listed, and some descriptions of the data. Please note:
     </p>
     <ul>
         <li>
             All input and output from this service is assumed to be JSON
         </li>
         <li>
-            All urls need a base-url to get started, this will be provided.
+            Feel free to use the internet as a resource. You must implement the solution yourself though.
+        </li>
+        <li>
+            Don't worry about authentication or authorization. This version will be used by an in-store ordering
+            system, so we can worry about auth in the future.
+        </li>
+        <li>
+            For persistence, don't get hung up creating databases unless you're very familiar. You can just append
+            to an in-memory data structure or write to a json file.
         </li>
     </ul>
 
@@ -46,89 +60,56 @@
 
     <pre>
 {
-    "id": 42,                   # A unique identifier
-    "pizza_size": "medium",     # small, medium, or large
-    "toppings": ["onion"]       # A list of toppings, see /toppings endpoint for valid entries
+    "id": 42,                                                # A unique identifier
+    "sandwich_size": "medium",                               # enum of: small, medium, or large
+    "ingredients": ["turkey", "cheddar-cheese", "lettuce"]   # A list of ingredients
 }
 </pre>
 
-    <h2>Endpoints</h2>
+    <h2>Endpoint to implement</h2>
 
+    <p>
+        Please implement the <b>/orders</b> endpoint with http GET and POST methods as described below.
+    </p>
 
-    <table>
-        <tbody>
-        <tr>
-            <th>/orders</th>
-            <td>
-                <b>GET</b>
-                <p>
-                    Performing an http GET on /orders will return a json list of orders, as described by the shape
-                    above. Eg:
-                </p>
-                <pre>
+    <b>Http GET</b>
+    <p>
+        Performing an http GET on /orders will return a json list of orders, as described by the shape
+        above. Eg:
+    </p>
+    <pre>
 $# curl http://hostname:5000/orders
 [
-  {
-    "id": 1,
-    "pizza_size": "small",
-    "toppings": []
-  },
-  {
-    "id": 2,
-    "pizza_size": "medium",
-    "toppings": ["pepperoni"]
-  }
+    {
+        "id": 1,
+        "sandwich_size": "small",
+        "ingredients": []
+    },
+    {
+        "id": 2,
+        "sandwich_size": "medium",
+        "ingredients": ["turkey"]
+    }
 ]
-                </pre>
+    </pre>
 
-                <b>POST</b>
-                <p>
-                    Performing an http POST on /orders with a valid json body shape will create an order.
-                    Note that "id" should not be included, will be generated server-side. Eg:
-                </p>
-                <pre>
-$# curl -d '{"pizza_size": "small", "toppings": ["mushroom"]}' http://hostname:5000/orders
+    <b>Http POST</b>
+    <p>
+        Performing an http POST on /orders with a valid json body shape will create an order.
+        The POST handler will be responsible for validating the payload, generating a unique id, and
+        perisisting the order.
+        Note that "id" should not be included, will be generated server-side. Eg:
+    </p>
+    <pre>
+$# curl -d '{"sandwich_size": "small", "ingredients": ["cheddar-cheese"]}' http://hostname:5000/orders
 {
-  "id": 5,
-  "pizza_size": "small",
-  "toppings": [
-    "mushroom"
-  ]
+    "id": 5,
+    "sandwich_size": "small",
+    "ingredients": [
+        "cheddar-cheese"
+    ]
 }
-                </pre>
-            </td>
-        </tr>
-        <tr>
-            <th>/toppings</th>
-            <td>
-                <b>GET</b>
-                <p>
-                    Performing an http GET on /orders will return a json list of toppings. Eg:
-                </p>
-                <pre>
-curl http://hostname:5000/toppings
-[
-  "pepperoni",
-  "mushroom",
-  "onion"
-]
-                </pre>
-            </td>
-        </tr>
-        <tr>
-            <th>/price</th>
-            <td>
-                <b>POST</b>
-                <p>
-                    Performing an http POST on /price will return the price of a pizza. Assume $US for value. Eg:
-                </p>
-                <pre>
-$# curl -d '{"pizza_size": "small", "toppings": ["mushroom"]}' http://hostname:5000/price
-                </pre>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+    </pre>
 
 </div>
 </body>
